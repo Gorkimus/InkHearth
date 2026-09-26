@@ -1,0 +1,43 @@
+# Second, isolated instance for testing an update before it goes live.
+#   docker compose -p booktracker-staging -f docker-compose.staging.yml up -d --build
+# Data lives in ./data-staging — disposable by design; delete it to reset.
+services:
+  booktracker-staging:
+    build: .
+    container_name: booktracker-staging
+    ports:
+      # Loopback (smoke tests, ssh port-forwards) + the LAN interface for
+      # direct http://<LAN_IP>:3223 validation — staging has no tunnel. Set
+      # LAN_IP in .env (docker compose interpolates it from there, same as
+      # ABS_NETWORK_NAME); unset collapses to loopback-only.
+      - "127.0.0.1:3223:3222"
+      - "${LAN_IP:-127.0.0.1}:3223:3222"
+    volumes:
+      - ./data-staging:/app/data
+      - ./backups-staging:/app/backups
+    env_file: .env
+    environment:
+      # Plain-HTTP testing: browsers silently drop Secure cookies on http://,
+      # so this stays 0 unless this instance sits behind an https proxy.
+      COOKIE_SECURE: 0
+      # A test instance should never auto-poll real device/vendor clouds —
+      # keep progress syncing manual while validating.
+      KOBO_SYNC_HOURS: 0
+      # Tab title/favicon/header badge — two instances open side by side must
+      # never be mistaken for each other.
+      INSTANCE_LABEL: STAGING
+    restart: unless-stopped
+    networks: [abs-network]
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://localhost:3222/api/health').then(r=>r.json()).then(j=>{if(!j.ok)process.exit(1)}).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+
+networks:
+  abs-network:
+    external: true
+    # Override via .env/shell when your Docker network has another name
+    # (e.g. one created by an Audiobookshelf stack).
+    name: ${ABS_NETWORK_NAME:-audiobookshelf_abs-network}

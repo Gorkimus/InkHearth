@@ -1,0 +1,46 @@
+# API smoke suite against an isolated throwaway server — the same sequence
+# documented in HANDOFF ("scratch server"): fresh DB via BT_DB_PATH, external
+# pollers off so CI never touches the network, suite drives the API as the
+# seeded admin (it handles the fresh-install passwordless case itself).
+name: smoke
+on:
+  push:
+    branches: [main, staging]
+  pull_request:
+    branches: [main]
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
+      - name: Dependency audit
+        # The runtime surface is one dependency deep; this trips on any new
+        # high/critical advisory so a vulnerable update can't ship quietly.
+        run: npm audit --audit-level=high
+      - name: Boot isolated server on a scratch DB
+        run: |
+          mkdir -p data/tmp backups .tmp-smoke
+          BT_DB_PATH="$PWD/.tmp-smoke/booktracker.db" PORT=3399 \
+            GENRE_SYNC_HOURS=0 KOBO_SYNC_HOURS=0 ABS_SYNC_HOURS=0 BACKUP_HOURS=0 \
+            ABS_LINK_ALLOWLIST="http://127.0.0.1:34877" \
+            node server/index.js > .tmp-smoke/server.log 2>&1 &
+          echo $! > .tmp-smoke/server.pid
+          for i in $(seq 1 30); do
+            if curl -sf http://localhost:3399/api/health > /dev/null; then exit 0; fi
+            sleep 1
+          done
+          cat .tmp-smoke/server.log >&2
+          echo "server did not become healthy" >&2
+          exit 1
+      - name: Run smoke suite
+        run: SMOKE_BASE=http://localhost:3399/api SMOKE_DB="$PWD/.tmp-smoke/booktracker.db" node scripts/smoke-test.js
+      - name: Stop server
+        if: always()
+        run: kill "$(cat .tmp-smoke/server.pid)" 2>/dev/null || true
