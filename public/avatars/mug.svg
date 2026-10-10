@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96">
+  <!-- Tea and a book: steaming mug resting on a closed book -->
+  <circle cx="48" cy="48" r="48" fill="#241f16"/>
+  <path d="M36 20 c-2.4 2.4 -2.4 5 0 7.4" stroke="#8b93a7" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <path d="M46 20 c-2.4 2.4 -2.4 5 0 7.4" stroke="#8b93a7" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <rect x="28" y="31" width="26" height="24" rx="5" fill="#b3573f"/>
+  <path d="M54 36 h4.5 a7.5 7.5 0 0 1 0 15 H54" stroke="#b3573f" stroke-width="4.5" fill="none"/>
+  <rect x="28" y="42" width="26" height="4" rx="2" fill="#8f3f2c"/>
+  <rect x="23" y="57" width="50" height="8" rx="2.5" fill="#5b4632"/>
+  <rect x="26" y="65" width="44" height="4" rx="2" fill="#e8ebf2" opacity="0.8"/>
+</svg>
