@@ -1,0 +1,16 @@
+{
+  "name": "inkhearth",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "license": "GPL-3.0-or-later",
+  "description": "Local-first book tracking: read + listened stats, tier lists, taste-based recs later.",
+  "scripts": {
+    "start": "node server/index.js",
+    "smoke": "node scripts/smoke-test.js"
+  },
+  "dependencies": {
+    "express": "^4.22.2",
+    "fflate": "^0.8.3"
+  }
+}

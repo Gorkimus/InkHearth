@@ -1,0 +1,32 @@
+services:
+  booktracker:
+    build: .
+    container_name: booktracker
+    ports:
+      # Loopback only: real ingress is the https tunnel (cloudflared reaches
+      # this container as http://booktracker:3222 over the shared Docker
+      # network — verified in the tunnel's ingress config). Publishing on
+      # all interfaces would hand the LAN a plain-HTTP copy of the app.
+      - "127.0.0.1:3222:3222"
+    volumes:
+      - ./data:/app/data
+      # Snapshots must survive container replacement — /app/backups is NOT
+      # part of the data volume.
+      - ./backups:/app/backups
+    env_file: .env
+    restart: unless-stopped
+    networks: [abs-network]
+    healthcheck:
+      # node:24-alpine has no curl/wget — use the runtime's own fetch.
+      test: ["CMD", "node", "-e", "fetch('http://localhost:3222/api/health').then(r=>r.json()).then(j=>{if(!j.ok)process.exit(1)}).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+
+networks:
+  abs-network:
+    external: true
+    # Override via .env/shell when your Docker network has another name
+    # (e.g. one created by an Audiobookshelf stack).
+    name: ${ABS_NETWORK_NAME:-audiobookshelf_abs-network}
