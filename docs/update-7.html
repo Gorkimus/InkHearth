@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>InkHearth — Updates 5.10 → 5.12 · The Whole Story</title>
+<style>
+  :root { color-scheme: dark; }
+  body { margin:0; background:#171310; color:#ece5da; font:16px/1.65 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 40px 28px 80px; }
+  h1 { font-size: 34px; margin: 0 0 4px; color:#f5ead9; }
+  .badge { display:inline-block; background:#e8964b; color:#22160a; border-radius:999px; padding:3px 14px; font-size:13px; font-weight:700; letter-spacing:.04em; }
+  .date { color:#a89880; margin: 10px 0 26px; }
+  .lead { font-size: 18px; color:#dccfba; border-left:3px solid #e8964b; padding-left:14px; margin: 0 0 34px; font-style: italic; }
+  h2 { font-size: 22px; margin: 44px 0 12px; padding-bottom: 8px; border-bottom: 1px solid #2b2318; color:#f0e3cd; }
+  h2 .u { color:#a89880; font-size: 14px; font-weight: 400; float: right; margin-top: 6px; }
+  h3 { font-size: 16px; margin: 18px 0 4px; color:#e8b878; }
+  ul { margin: 8px 0; padding-left: 22px; }
+  li { margin: 7px 0; }
+  li::marker { color:#e8964b; }
+  strong { color:#fff; }
+  em { color:#e8b878; font-style: normal; }
+  .tip { background:#221c15; border:1px solid #3a2f20; border-radius:10px; padding: 14px 18px; margin: 30px 0; }
+  .footer { margin-top: 50px; padding-top: 18px; border-top: 1px solid #2b2318; color:#a89880; font-size: 14px; }
+  a { color:#e8964b; text-decoration: none; } a:hover { text-decoration: underline; }
+  .glow { color:#e8964b; }
+</style></head><body><div class="wrap">
+<span class="badge">UPDATES 5.10 → 5.12</span>
+<h1>🔥 InkHearth — "The Whole Story"</h1>
+<div class="date">October 9, 2026 · all of it already live — refresh your tab and you're on the latest</div>
+<p class="lead">Since the last letter: the household grew a book club, the tier board learned to pose for pictures and tell the whole truth, your library card found its way onto the shelf, and a forgotten password stopped being a locked door.</p>
+
+<h2>📸 Export the board with its book list <span class="u">5.12 · Oct 9</span></h2>
+<ul>
+  <li>A new <strong>Include book list</strong> toggle sits beside the board's export button. Tick it and the picture gains a reading list under the covers — every tier as its own colored badge, each book's <strong>title and author</strong> underneath, laid out in clean columns. Sized and styled for posting, and the whole shelf fits no matter how tall it grows.</li>
+  <li><strong>DNF marks, right on the shelf.</strong> The lowest tier simply reads <em>Disliked</em> now — and a book you actually didn't finish wears a small DNF badge on its cover tile, on the board and inside the exported picture and list alike. Finish the book later and the badge quietly goes away.</li>
+  <li><strong>Locked out? Your other devices can let you in.</strong> Forgot the password while signed out everywhere? The login screen can show a six-digit code, and any device still signed in as you gets an <em>approve this sign-in</em> card — match the code, tap approve, and the locked device lands on the reset screen to pick a new password. Requests expire in ten minutes, members only ever see their own, and a wrong name never reveals whether the account exists.</li>
+  <li><strong>Kobo sync, round three.</strong> The earlier repair's replay had been quietly leaving duplicate copies when the device spelled an author its own way ("Author, Translator" where the shelf says "Author") or knew a book by a shorter title. Matching now reads authors and titles the way the device writes them, a finish can't be logged twice across copies, and the sync <em>holds its place and re-asks</em> on progress it can't yet resolve instead of moving on and losing it forever.</li>
+</ul>
+
+<h2>🎨 The picture worth framing <span class="u">5.11 · Oct 8</span></h2>
+<ul>
+  <li><strong>The board exports properly now.</strong> The shareable picture used to give up — blank letter tiles where most covers should be, and big tiers chopped off with a "+28 more". Rebuilt: every book paints, tiers wrap onto as many lines as they need, covers keep their shape, and the header carries the count and date. (The server fetches the covers for the export itself now — some book sites refuse to let a browser reuse their images, and they were silently winning.)</li>
+  <li><strong>Filter the board.</strong> A ▽ Filter toggle narrows the whole shelf to one <strong>author</strong> or a <strong>year read</strong> — the picture follows the filter, and dragging pauses while it's on so an arrangement can't be scrambled by accident.</li>
+  <li><strong>Import from Libby.</strong> Library-card readers, meet the shelf: export your timeline from Libby and upload the CSV on Memory lane. You pick each book's status and format in the review list (audiobook-only publishers arrive pre-set to Listened), and read dates are honest estimates — borrow date plus loan period, marked ~ so you can fix the wild ones.</li>
+  <li><strong>The bell reads better.</strong> Finish nudges name their book (and author), and every actionable row carries an inline 👏.</li>
+  <li>Phones can't pan the page sideways anymore, and the tier board has a <strong>🖼 covers-only wall</strong> view.</li>
+</ul>
+
+<h2>🔥 The club by the hearth <span class="u">5.10 · Oct 3</span></h2>
+<ul>
+  <li><strong>Club picks and readalongs.</strong> Any member can raise a poll — "what should we read next?" — seeded from everyone's TBR next-ups. Votes tally live, the poll's creator crowns a winner, and "I'm in" copies it onto your shelf. Crown a pick and it can become a <strong>readalong</strong>: set a finish-by date and the pace wall appears — everyone's progress side by side, each row chipped finished / ahead / on pace / behind, with the book's chatter thread living right inside the wall.</li>
+  <li><strong>Chatter, per book.</strong> Every work has one thread across all copies of it. Comments carry your progress when you post; anything said past your own page hides behind a "keep reading" note, spoiler-flagged comments wait until you finish, and the bell links straight into the thread.</li>
+  <li><strong>Storyteller Selection.</strong> A blind tasting flight for voices: the app rewrites a passage in the style of authors picked from your own shelves, you rank the anonymized excerpts, and the reveal tells you whose voice you were loving — next to how you actually rate their books.</li>
+  <li><strong>Everyone gets a portrait.</strong> No photo? Wear one of the five hearth icons — the fireplace, the lantern, the open book, the book pile, the tea. Account → Hearth portraits to choose yours.</li>
+  <li><strong>Kobo cloud sync, repaired.</strong> The sync feed speaks several event shapes, and finishes arriving in one of them were being dropped silently for weeks. Every shape is read now, finishes date from Kobo's own "last finished" stamp and are never re-dated, and re-running a sync can't mint duplicate books.</li>
+  <li><strong>Under the floorboards:</strong> members' custom audiobook-server links face a higher bar (https on public hostnames, with an admin allowlist for home-network addresses), the dashboard's chatter card stopped showing broken avatars, and streaks count their days in your timezone.</li>
+</ul>
+
+<div class="tip">💬 <strong>Try this tonight:</strong> open the tier board, tick <strong>Include book list</strong>, and export — that's the picture worth posting. Then raise a poll for the club's next read, and when it wins, crown it a readalong.</div>
+
+<div class="footer">InkHearth · a cozy shelf for people who read together · <a href="index.html">back to the hearth</a> — open the app as usual, you're already on the new version<br>
+Self-hosted and ours — it wouldn't know how to phone home if it tried.</div>
+</div></body></html>

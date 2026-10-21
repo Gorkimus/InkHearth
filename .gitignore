@@ -1,0 +1,24 @@
+node_modules/
+data/
+.env
+*.log
+backups/
+.zcode/
+data-staging/
+backups-staging/
+data-DO-NOT-USE/
+qdrant_storage/
+
+# Internal ops docs + private artifacts — live on disk for the maintainer
+# and local agents, never tracked (sanitized out Sept 21, 2026; the last
+# tracked versions remain recoverable in private git history).
+AGENTS.md
+HANDOFF.md
+docs-private/
+dist/
+
+# scratch SQLite temp DBs (janitor test runs etc.)
+.tmp-*.db
+
+# local smoke scratch
+.tmp-smoke/
