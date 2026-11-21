@@ -1,0 +1,20 @@
+# Overlay for households running Audiobookshelf (or any https tunnel) that
+# should reach this container BY CONTAINER NAME over a shared Docker network.
+# The base compose is standalone on purpose; add this file only when you have
+# such a network:
+#   docker compose -f docker-compose.yml -f docker-compose.abs.yml up -d --build
+#
+# Without this overlay, ABS integrations still work over https:// member
+# links (see ABS_LINK_ALLOWLIST) — the network is for plain-http LAN origins
+# (e.g. http://192.0.2.9:13378, a documentation address) that the SSRF gate
+# otherwise rightly refuses for non-admin-supplied URLs.
+services:
+  booktracker:
+    networks: [abs-network]
+
+networks:
+  abs-network:
+    external: true
+    # Override via .env/shell when your Docker network has another name
+    # (e.g. one created by an Audiobookshelf stack).
+    name: ${ABS_NETWORK_NAME:-audiobookshelf_abs-network}

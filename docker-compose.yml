@@ -1,0 +1,33 @@
+# Works standalone: `docker compose up -d --build` on a fresh host with no
+# .env and no pre-existing networks — the app boots, prints a one-time admin
+# claim link in `docker logs`, and you're in. Integrations (Audiobookshelf
+# link reachability from this container, a shared tunnel network) live in
+# docker-compose.abs.yml; add that overlay only when you have one:
+#   docker compose -f docker-compose.yml -f docker-compose.abs.yml up -d --build
+services:
+  booktracker:
+    build: .
+    container_name: booktracker
+    ports:
+      # Loopback by default (safe: plain HTTP shouldn't face the LAN/Internet
+      # directly — put https in front). To reach the app from other machines
+      # on your LAN, set LISTEN=0.0.0.0 (or a specific interface IP) in .env.
+      - "${LISTEN:-127.0.0.1}:3222:3222"
+    volumes:
+      - ./data:/app/data
+      # Snapshots must survive container replacement — /app/backups is NOT
+      # part of the data volume.
+      - ./backups:/app/backups
+    # Optional: every setting has a sane default, so a missing .env is fine
+    # (compose >= 2.24). `cp .env.example .env` when you want to configure.
+    env_file:
+      - path: .env
+        required: false
+    restart: unless-stopped
+    healthcheck:
+      # node:24-alpine has no curl/wget — use the runtime's own fetch.
+      test: ["CMD", "node", "-e", "fetch('http://localhost:3222/api/health').then(r=>r.json()).then(j=>{if(!j.ok)process.exit(1)}).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
