@@ -1,0 +1,27 @@
+# Smoke-test boot override: the suite's mock Audiobookshelf listens on
+# 127.0.0.1:34877 inside the same container the smoke runs in (docker compose
+# exec), so the SSRF gate must sanction that exact origin at boot. Only add
+# this file to the compose command when smoke-testing; boot normally
+# otherwise. Copy scripts/smoke-test.js into the container first — the image
+# ships only server/ and public/:
+#   docker exec -u root booktracker-staging mkdir -p /app/scripts
+#   docker cp scripts/smoke-test.js booktracker-staging:/app/scripts/
+#   docker compose -p booktracker-staging -f docker-compose.staging.yml \
+#     -f docker-compose.staging-smoke.yml up -d --force-recreate
+#   docker compose -p booktracker-staging -f docker-compose.staging.yml \
+#     -f docker-compose.staging-smoke.yml exec -T booktracker-staging sh -c \
+#     "SMOKE_BASE=http://localhost:3222/api SMOKE_DB=data/booktracker.db node scripts/smoke-test.js"
+services:
+  booktracker-staging:
+    environment:
+      ABS_LINK_ALLOWLIST: http://127.0.0.1:34877,http://localhost:34877
+      # The cover-proxy section's mock listens here (same container the smoke
+      # runs in) — the relay's built-in CDN whitelist stays untouched.
+      COVER_PROXY_EXTRA_HOSTS: 127.0.0.1:34878,localhost:34878
+      # The suite's fixtures have fake titles/authors — with a live token,
+      # save-time Hardcover enrichment matches them anyway ('Smoke ABS
+      # Finished' once got retitled to a real novel "Smoke", which broke the
+      # section's own list query and stranded the fixture books). Smoke runs
+      # are deterministic without it: enrichment skips, re-pull sections
+      # assert the matched:false degrade path only.
+      HARDCOVER_TOKEN: ""
